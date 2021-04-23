@@ -1,8 +1,8 @@
-const mysql = rewuire('mysql');
+const mysql = require('mysql');
 const util = require('util');
 require('dotenv').config();
 
-const connections = mysql.createConnection(
+const connection = mysql.createConnection(
     process.env.DB_NAME,
     process.env.DB_USER,
     process.env.DB_PASSWORD,
@@ -12,7 +12,7 @@ const connections = mysql.createConnection(
     port: 3030
 })
 
-connections.conntect();
-connections.query = util.promisify(connections.query);
+connection.conntect();
+connection.query = util.promisify(connection.query);
 
-module.exports = connections;
+module.exports = connection;
