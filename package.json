@@ -8,5 +8,9 @@
     "mysql": "^2.18.1",
     "sequelize": "^6.6.2",
     "sequelizer": "^1.1.4"
+  },
+  "scripts": {
+    "test": "jest --verbose test/*",
+    "start": "node index.js"
   }
 }
