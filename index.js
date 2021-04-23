@@ -22,41 +22,40 @@ function start() {
             case "Update Employee Manager": return updateEmpMan();
         }
     })
-    // viewEmployees();
 }
 
-function genEmpView() {
-
+async function genEmpView() {
+    let allEmployees = await db.selectAllEmployees();
+    return console.table(allEmployees);
 }
 
-function depEmpView() {
-
+async function depEmpView() {
+    console.log("view dep emp")
 }
 
-function manEmpView() {
-
+async function manEmpView() {
+    console.log("view manager emp")
 }
 
 function addEmp() {
-
+    console.log("add emp")
 }
 
 function remEmp() {
-
+    console.log("rem emp")
 }
 
 function updateEmpRole() {
-
+    console.log("update emp role")
 }
 
 function updateEmpMan() {
-    
+    console.log("update emp manager")
 }
 
 
 async function viewEmployees() {
-    let allEmployees = await db.selectAllEmployees();
-    console.table(allEmployees);
+    
 }
 
 start();

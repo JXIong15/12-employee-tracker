@@ -10,6 +10,14 @@ class DB {
     		"SELECT * from employee"
     	)
     }
+
+    selectDepEmployees() {
+
+    }
+
+    selectManEmployees() {
+        
+    }
 }
 
 module.exports = new DB(connection);
