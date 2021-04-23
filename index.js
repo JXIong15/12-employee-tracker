@@ -1,6 +1,6 @@
 const db = require("./db")
 require("console.table")
-const inquire = require("inquirer");
+// const inquire = require("inquirer");
 
 console.log("-----------------\nEmployee Manager\n-----------------");
 
@@ -26,7 +26,7 @@ function start() {
 
 async function genEmpView() {
     let allEmployees = await db.selectAllEmployees();
-    return console.table(allEmployees);
+    console.table(allEmployees);
 }
 
 async function depEmpView() {
@@ -58,4 +58,5 @@ async function viewEmployees() {
     
 }
 
-start();
+// start();
+genEmpView();
