@@ -2,7 +2,7 @@ const db = require("./db")
 require("console.table")
 // const inquire = require("inquirer");
 
-console.log("-----------------\nEmployee Manager\n-----------------");
+console.log("\n-----------------\nEmployee Manager\n-----------------\n");
 
 function start() {
     inquire.prompt({

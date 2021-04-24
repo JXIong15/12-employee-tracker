@@ -7,14 +7,15 @@ class DB {
 
     
     selectAllEmployees() {
-        let sql = "SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department, r.salary, CONCAT_WS('', e2.first_name, ' ', e2.last_name) AS manager " + 
+        let sql = "SELECT e.id, e.first_name, e.last_name, r.title, d.name AS department, r.salary, CONCAT('', m.first_name, ' ', m.last_name) AS manager " + 
             "FROM employee e " +
-            "INNER JOIN employee e2 " +
-                "ON e.manager_id = e2.id " +
             "JOIN role r " +
                 "ON e.role_id = r.id " +
             "JOIN department d " +
-                "ON d.id = r.department_id";
+                "ON d.id = r.department_id " +
+            "LEFT JOIN employee m " +
+                "ON e.manager_id = m.id " +
+            "ORDER BY e.id ASC";
 
     	return this.connection.query(sql);
     }
