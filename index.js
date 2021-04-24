@@ -2,6 +2,11 @@ const db = require("./db")
 require("console.table")
 const inquire = require("inquirer");
 const { connection } = require("./db");
+const addEmployee = require("./library/add-employee");
+const inquirer = require("inquirer");
+const Employee = require("./library/Employee.js");
+const team = [];
+
 
 console.log("\n-----------------\nEmployee Manager\n-----------------\n");
 
@@ -10,7 +15,15 @@ function start() {
         type: "list",
         name: "start",
         message: "What would you like to do?",
-        choices: ['View All Employees', 'View All Employees By Department', 'View All Employees By Manager', 'Add Employee', 'Remove Employee', 'Update Employee Role', 'Update Employee Manager', 'Quit']
+        choices: [
+            'View All Employees',
+            'View All Employees By Department',
+            'View All Employees By Manager',
+            'Add Employee', 'Remove Employee', 
+            'Update Employee Role', 
+            'Update Employee Manager', 
+            'Quit'
+        ]
     })
     .then((response) => {
         switch (response.start) {
@@ -33,8 +46,18 @@ async function genEmpView() {
 }
 
 async function depEmpView() {
-    console.log("view dep emp");
-    start();
+    inquire.prompt({
+        type: 'list',
+        name: 'department',
+        message: 'Which department do you want to view?',
+        choices: []
+    })
+    .then((res) => {
+
+
+        console.log("view dep emp");
+        start();
+    })
 }
 
 async function manEmpView() {
@@ -42,9 +65,13 @@ async function manEmpView() {
     start();
 }
 
-function addEmp() {
-    console.log("add emp");
-    start();
+async function addEmp() {
+    inquirer.prompt(addEmployee).then(res => {
+        const employee = new Employee(res.first, res.last, res.role, res.department, res.salary, res.depID, res.manager);
+        team.push(employee);
+        // console.log(employee);
+    })
+    .then((res) => {start()})
 }
 
 function remEmp() {
