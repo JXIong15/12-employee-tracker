@@ -90,6 +90,19 @@ class DB {
         }) 
         return deptList;
     }
+
+    async makeRoleList() {
+        let roleList = [];
+        let rdp = await this.connection.query(`
+            SELECT title
+                FROM role
+                ORDER BY role.id ASC`);
+        let roles = JSON.parse(JSON.stringify(rdp));
+        roles.forEach(role => {
+            roleList.push(role.title)
+        }) 
+        return roleList;
+    }
 }
 
 module.exports = new DB(connection);

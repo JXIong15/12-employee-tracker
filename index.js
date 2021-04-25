@@ -12,30 +12,106 @@ function start() {
     inquire.prompt({
         type: "list",
         name: "start",
-        message: "What would you like to do?",
+        message: "Which menu would you like to look at?",
         choices: [
-            'View All Employees',
-            'View All Employees By Department',
-            'View All Employees By Manager',
-            'Add Employee', 'Remove Employee', 
-            'Update Employee Role', 
-            'Update Employee Manager', 
+            'Department Menu',
+            'Role Menu',
+            'Employee Menu',
             'Quit'
         ]
     })
     .then((response) => {
         switch (response.start) {
-            case 'View All Employees': return genEmpView();
-            case "View All Employees By Department": return depEmpView();
-            case "View All Employees By Manager": return manEmpView();
-            case "Add Employee": return addEmp();
-            case "Remove Employee": return remEmp();
-            case "Update Employee Role": return updateEmpRole();
-            case "Update Employee Manager": return updateEmpMan();
+            case 'Department Menu': return deptMenu();
+            case 'Role Menu': return roleMenu();
+            case 'Employee Menu': return employeeMenu();
             case "Quit": connection.end();
         }
     })
 }
+
+function deptMenu() {
+    inquire.prompt({
+        type: "list",
+        name: "deptMenu",
+        message: "What would you like to do in the Department menu?",
+        choices: [
+            'View All Employees By Department',
+            'View All Department(s)',
+            'Add Department', 
+            'Remove Department',
+            'View Department Budget',
+            'Back to Main Menu',
+            'Quit'
+        ]
+    })
+    .then(async (response) => {
+        switch (response.deptMenu) {
+            case 'View All Employees By Department': return depEmpView();
+            case 'View All Department(s)': return await db.makeDeptList();
+            case 'Add Department': return addDept();
+            case 'Remove Department': return remDept();
+            case 'View Department Budget': return deptBudget();
+            case 'Back to Main Menu': return start();
+            case'Quit': connection.end();
+        }
+    })
+}
+
+function roleMenu() {
+    inquire.prompt({
+        type: "list",
+        name: "roleMenu",
+        message: "What would you like to do in the Role Menu?",
+        choices: [
+            'Add Role', 
+            'Remove Role',
+            'View All Role(s)',
+            'Back to Main Menu',
+            'Quit'
+        ]
+    })
+    .then(async (response) => {
+        switch (response.roleMenu) {
+            case 'Add Role': return addRole(); 
+            case 'Remove Role': return remRole();
+            case 'View All Role(s)': return await db.makeRoleList();
+            case 'Back to Main Menu': return start();
+            case "Quit": connection.end();
+        }
+    })
+}
+
+function employeeMenu() {
+    inquire.prompt({
+        type: "list",
+        name: "empMenu",
+        message: "What would you like to do in the Employee Menu?",
+        choices: [
+            'View All Employees',
+            'View All Employees By Manager',
+            'Add Employee', 
+            'Remove Employee', 
+            'Update Employee Role', 
+            'Update Employee Manager',
+            'Back to Main Menu',
+            'Quit'
+        ]
+    })
+    .then((response) => {
+        switch (response.empMenu) {
+            case 'View All Employees': return genEmpView();
+            case 'View All Employees By Manager': return manEmpView();
+            case 'Add Employee': return addEmp();
+            case 'Remove Employee': return remEmp();
+            case 'Update Employee Role': return updateEmpRole();
+            case 'Update Employee Manager': return updateEmpMan();
+            case 'Back to Main Menu': return start();
+            case "Quit": connection.end();
+        }
+    })
+}
+
 
 async function genEmpView() {
     let allEmployees = await db.selectAllEmployees();
@@ -109,5 +185,5 @@ function updateEmpMan() {
     start();
 }
 
-// start();
-depEmpView();
+start();
+// depEmpView();
