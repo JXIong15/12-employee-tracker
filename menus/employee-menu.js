@@ -41,8 +41,8 @@ const empMenu= {
             employee.manager = res.manager;
             employee.depID = data[0].department_id;
 
-            team.push(employee);
-            console.table(team);
+            team.push(employee); // NEED TO SAVE TO LOCALSTORAGE
+            return console.table(team);
         })
     },
 
@@ -50,8 +50,33 @@ const empMenu= {
         console.log("rem emp");
     },
 
+    // TO-DO IF I HAVE TIME: DISPLAY CHOSEN EMP CURRENT ROLE
     async updateEmpRole() {
-        console.log("update emp role");
+        let empList = await db.makeManagerList();
+        let roleList = await db.makeRoleList();
+        let emp;
+
+        inquire.prompt({
+            type: 'list',
+            name: 'chosenEmp',
+            message: "Which Employee's Role would you like to change?",
+            choices: empList
+        })
+        .then(async (res) => {
+            emp = res.chosenEmp;
+            inquire.prompt({
+                type: 'list',
+                name: 'newRole',
+                message: "What is their New Role?",
+                choices: roleList
+            })
+            .then(async (resp) => {
+                await db.updateRole(emp, resp.newRole);
+                let newTable = await empMenu.genEmpView();
+                return console.table(newTable);
+            })
+        })
+        
     },
 
     async updateEmpMan() {

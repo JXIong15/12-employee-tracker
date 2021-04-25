@@ -126,5 +126,26 @@ class DB {
         )
         return result[0].name;
     }
+
+    async updateRole(name, newRole) {
+        // search for the role_id of the input role
+        let result = await this.connection.query(`
+            SELECT id FROM role
+            WHERE title = "${newRole}";
+        `)
+        console.log(result);
+        let newRoleID = result[0].id;
+
+        return await this.connection.query(`
+            SET SQL_SAFE_UPDATES=0;
+            UPDATE employee e
+            SET role_id = ${newRoleID}
+                WHERE role_id IN (
+            SELECT id FROM role 
+                WHERE id = role_id)
+                AND CONCAT('', e.first_name, ' ', e.last_name) = "${name}";
+            SET SQL_SAFE_UPDATES=1;
+        `)
+    }
 }
 module.exports = new DB(connection);

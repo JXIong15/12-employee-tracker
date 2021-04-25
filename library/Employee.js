@@ -16,7 +16,7 @@ class Employee {
     getLast() {
         return this.last;
     }
-    getTitle() {
+    getRole() {
         return this.title;
     }
     

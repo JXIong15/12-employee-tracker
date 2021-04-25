@@ -169,4 +169,7 @@ function employeeMenu() {
 
 // initializes app
 // start();
-eMenu.addEmp()
+
+
+// eMenu.addEmp()
+eMenu.updateEmpRole();
