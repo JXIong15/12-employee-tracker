@@ -3,7 +3,7 @@ const inquire = require("inquirer");
 require("console.table");
 const addEmployee = require("../library/add-employee");
 const Employee = require("../library/Employee.js");
-const team = [];
+const team = []; // SAVE TO LOCAL STORAGE?
 const { response } = require("express");
 
 const empMenu= {

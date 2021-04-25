@@ -1,9 +1,15 @@
 const db = require('../db');
 const { connection } = require("../db");
 
+let rolesList = [];
+let managerList = [];
 
-let rolesList = new Promise(async (res, rej) => {await db.makeRoleList()});
-let managerList = new Promise(async (res, rej) => {await db.makeManagerList()});
+async function lists() {
+    managerList = await db.makeManagerList();
+    rolesList = await db.makeRoleList();
+}
+
+lists();
 
 const addEmployee = [
     {
@@ -20,13 +26,15 @@ const addEmployee = [
         type: 'list',
         name: 'title',
         message: "What is the employee's role?",
-        choices: rolesList
+        // choices: rolesList
+        choices: ["Lawyer"]
     },
     {
         type: 'list',
         name: 'manager',
         message: "Who is the employee's manager?",
-        choices: managerList
+        // choices: managerList
+        choices: ["John Doe"]
     }
 ]
 
