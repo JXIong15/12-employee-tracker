@@ -5,7 +5,6 @@ require("console.table");
 const deptMenu = {
     async depEmpView() {
         let deptList = await db.makeDeptList();
-    
         inquire.prompt({
             type: 'list',
             name: 'dept',

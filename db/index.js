@@ -5,7 +5,7 @@ class DB {
         this.connection = connection;
     }
 
-    selectAllEmployees() {
+    async selectAllEmployees() {
         return this.connection.query(`
             SELECT 
                 e.id, 
@@ -25,7 +25,7 @@ class DB {
             ORDER BY e.id ASC`);
     }
 
-    selectDepEmployees(dep) {
+    async selectDepEmployees(dep) {
         return this.connection.query(`
             SELECT 
                 e.id, 
@@ -45,7 +45,7 @@ class DB {
             ORDER BY e.id ASC`);
     }
 
-    selectManEmployees(manager) {
+    async selectManEmployees(manager) {
         return this.connection.query(`
             SELECT 
                 e.id, 
@@ -75,6 +75,7 @@ class DB {
         managers.forEach(employee => {
             managerList.push(employee.manager)
         }) 
+        // managerList.push("No One" = NULL) // CHECK
         return managerList;
     }
     
@@ -103,6 +104,27 @@ class DB {
         }) 
         return roleList;
     }
-}
 
+    async data(role) {
+        let roleID = await this.connection.query(`
+        SELECT id FROM department 
+            WHERE id IN (
+        SELECT department_id FROM role 
+            WHERE title = "${role}");
+        `);
+
+        let rdp = await this.connection.query(`
+            SELECT * FROM role 
+            WHERE department_id = ${roleID[0].id} AND title = "${role}"
+            ORDER BY role.id ASC;`);
+        return JSON.parse(JSON.stringify(rdp));
+    }
+
+    async deptName(deptID) {
+        let result =  await this.connection.query(
+            `SELECT name FROM department WHERE id = ${deptID}`
+        )
+        return result[0].name;
+    }
+}
 module.exports = new DB(connection);

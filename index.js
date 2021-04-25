@@ -1,19 +1,15 @@
 const db = require("./db")
-require("console.table");
 const rMenu = require("./menus/role-menu")
 const dMenu = require("./menus/department-menu");
 const eMenu = require("./menus/employee-menu")
 const inquire = require("inquirer");
 const { connection } = require("./db");
 const { response } = require("express");
-// const addEmployee = require("./library/add-employee");
-// const Employee = require("./library/Employee.js");
-const team = [];
+
 
 console.log("\n-----------------\nEmployee Manager\n-----------------\n");
 
-
-function start() {
+async function start() {
     inquire.prompt({
         type: "list",
         name: "start",
@@ -35,7 +31,7 @@ function start() {
     })
 }
 
-function deptMenu() {
+async function deptMenu() {
     inquire.prompt({
         type: "list",
         name: "deptMenu",
@@ -54,7 +50,7 @@ function deptMenu() {
         switch (response.deptMenu) {
             case 'View All Employees By Department': {
                 await dMenu.depEmpView();
-                deptMenu();
+                await deptMenu();
                 break;
             };
             case 'View All Department(s)': {
@@ -147,8 +143,8 @@ function employeeMenu() {
             }
             case 'Add Employee': {
                 await eMenu.addEmp();
-                employeeMenu();
-                break;
+                // employeeMenu();
+                // break;
             }
             case 'Remove Employee': {
                 await eMenu.remEmp();
@@ -171,5 +167,6 @@ function employeeMenu() {
     })
 }
 
-
-start();
+// initializes app
+// start();
+eMenu.addEmp()

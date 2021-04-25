@@ -1,19 +1,19 @@
 const db = require("../db");
 const inquire = require("inquirer");
 require("console.table");
+const addEmployee = require("../library/add-employee");
+const Employee = require("../library/Employee.js");
+const team = [];
+const { response } = require("express");
 
 const empMenu= {
-
     async genEmpView() {
         let allEmployees = await db.selectAllEmployees();
         console.table(allEmployees);
     },
 
-
-
     async manEmpView() {
         let managerList = await db.makeManagerList();
-
         inquire.prompt({
             type: 'list',
             name: 'manager',
@@ -32,12 +32,18 @@ const empMenu= {
     },
 
     async addEmp() {
-        // inquirer.prompt(addEmployee).then(res => {
-        //     const employee = new Employee(res.first, res.last, res.role, res.department, res.salary, res.depID, res.manager);
-        //     team.push(employee);
-        //     // console.log(employee);
-        // })
-        // .then((res) => {start()})
+        inquire.prompt(addEmployee).then(async (res) => {
+            let data = await db.data(res.title);
+
+            const employee = new Employee(res.first, res.last, res.title);
+            employee.department = await db.deptName(data[0].department_id);
+            employee.salary = data[0].salary;;
+            employee.manager = res.manager;
+            employee.depID = data[0].department_id;
+
+            team.push(employee);
+            console.table(team);
+        })
     },
 
     async remEmp() {
