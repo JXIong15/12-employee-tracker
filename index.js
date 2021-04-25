@@ -1,7 +1,9 @@
 const db = require("./db")
-require("console.table")
+require("console.table");
+const rMenu = require("./menus/role-menu")
 const inquire = require("inquirer");
 const { connection } = require("./db");
+const { response } = require("express");
 // const addEmployee = require("./library/add-employee");
 // const Employee = require("./library/Employee.js");
 const team = [];
@@ -47,11 +49,26 @@ function deptMenu() {
     })
     .then(async (response) => {
         switch (response.deptMenu) {
-            case 'View All Employees By Department': return depEmpView();
-            case 'View All Department(s)': return await db.makeDeptList();
-            case 'Add Department': return addDept();
-            case 'Remove Department': return remDept();
-            case 'View Department Budget': return deptBudget();
+            case 'View All Employees By Department': {
+                depEmpView();
+                return deptMenu();
+            }
+            case 'View All Department(s)': {
+                console.log(await console.log(db.makeDeptList()));
+                return deptMenu();
+            }
+            case 'Add Department': {
+                addDept();
+                return deptMenu();
+            }
+            case 'Remove Department': {
+                remDept();
+                return deptMenu();
+            }
+            case 'View Department Budget': {
+                deptBudget();
+                return deptMenu();
+            }
             case 'Back to Main Menu': return start();
             case'Quit': connection.end();
         }
@@ -73,13 +90,23 @@ function roleMenu() {
     })
     .then(async (response) => {
         switch (response.roleMenu) {
-            case 'Add Role': return addRole(); 
-            case 'Remove Role': return remRole();
-            case 'View All Role(s)': return await db.makeRoleList();
+            case 'Add Role': {
+                rMenu.addRole();
+                return roleMenu();
+            }
+            case 'Remove Role': {
+                rMenu.remRole();
+                return roleMenu();
+            }
+            case 'View All Role(s)': {
+                console.log(await db.makeRoleList());
+                return roleMenu();
+            }
             case 'Back to Main Menu': return start();
             case "Quit": connection.end();
         }
     })
+    // .then((res) => roleMenu());
 }
 
 function employeeMenu() {
