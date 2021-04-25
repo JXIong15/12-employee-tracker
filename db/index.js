@@ -6,7 +6,7 @@ class DB {
     }
 
     selectAllEmployees() {
-        let sql = `
+        return this.connection.query(`
             SELECT 
                 e.id, 
                 e.first_name, 
@@ -22,13 +22,11 @@ class DB {
                 ON d.id = r.department_id
             LEFT JOIN employee m
                 ON e.manager_id = m.id
-            ORDER BY e.id ASC`;
-
-    	return this.connection.query(sql);
+            ORDER BY e.id ASC`);
     }
 
     selectDepEmployees(dep) {
-        let sql = `
+        return this.connection.query(`
             SELECT 
                 e.id, 
                 e.first_name, 
@@ -44,13 +42,11 @@ class DB {
                 ON d.id = r.department_id AND d.name = "${dep}"
             LEFT JOIN employee m
                 ON e.manager_id = m.id 
-            ORDER BY e.id ASC`;
-
-    	return this.connection.query(sql);
+            ORDER BY e.id ASC`);
     }
 
     selectManEmployees(manager) {
-        let sql = `
+        return this.connection.query(`
             SELECT 
                 e.id, 
                 e.first_name, 
@@ -66,17 +62,33 @@ class DB {
                 ON e.manager_id = m.id
             JOIN department d
                 ON d.id = r.department_id AND CONCAT('', m.first_name, ' ', m.last_name) = "${manager}"
-            ORDER BY e.id ASC`;
-
-        return this.connection.query(sql);
+            ORDER BY e.id ASC`);
     }
 
-    makeManagerList() {
-        let sql = "SELECT CONCAT('', e.first_name, ' ', e.last_name) " +
-        "FROM employee e " +
-        "ORDER BY e.id ASC";
-
-        return this.connection.query(sql);
+    async makeManagerList() {
+        let managerList = [];
+        let rdp = await this.connection.query(`
+            SELECT CONCAT('', e.first_name, ' ', e.last_name) AS manager
+                FROM employee e
+                ORDER BY e.id ASC`);
+        let managers = JSON.parse(JSON.stringify(rdp));
+        managers.forEach(employee => {
+            managerList.push(employee.manager)
+        }) 
+        return managerList;
+    }
+    
+    async makeDeptList() {
+        let deptList = [];
+        let rdp = await this.connection.query(`
+            SELECT name
+                FROM department
+                ORDER BY department.id ASC`);
+        let depts = JSON.parse(JSON.stringify(rdp));
+        depts.forEach(dept => {
+            deptList.push(dept.name)
+        }) 
+        return deptList;
     }
 }
 

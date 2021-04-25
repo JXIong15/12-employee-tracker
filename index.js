@@ -6,7 +6,6 @@ const { connection } = require("./db");
 // const Employee = require("./library/Employee.js");
 const team = [];
 
-
 console.log("\n-----------------\nEmployee Manager\n-----------------\n");
 
 function start() {
@@ -44,26 +43,46 @@ async function genEmpView() {
     start();
 }
 
-function depEmpView() {
+async function depEmpView() {
+    let deptList = await db.makeDeptList();
+
     inquire.prompt({
         type: 'list',
-        name: 'dep',
+        name: 'dept',
         message: 'Which department do you want to view?',
-        // TO-DO: DEPARTMENT LIST RATHER THAN PSEUDO
-        choices: ["Sales"] 
+        choices: deptList
     })
     .then(async (res) => {
-        // departmentView(res.dep)
-        let depEmployees = await db.selectDepEmployees(res.dep);
-        console.log("\n")
-        console.table(depEmployees);  
+        let depEmployees = await db.selectDepEmployees(res.dept);
+        if (deptList.length = 0) {
+            console.log("No departments. Add one.")
+        } else {
+            console.log("\n")
+            console.table(depEmployees); 
+        }
         start(); 
     })
 }
 
 async function manEmpView() {
-    console.log("view manager emp");
-    start();
+    let managerList = await db.makeManagerList();
+
+    inquire.prompt({
+        type: 'list',
+        name: 'manager',
+        message: "Which manager's team do you want to view?",
+        choices: managerList
+    })
+    .then(async (res) => {
+        let depEmployees = await db.selectManEmployees(res.manager);
+        if (depEmployees.length === 0) {
+            console.log(`\n${res.manager} is not a manager for any employee(s).\n`);
+        } else {
+            console.log("\n");
+            console.table(depEmployees);
+        }
+        start(); 
+    })
 }
 
 async function addEmp() {
@@ -90,4 +109,5 @@ function updateEmpMan() {
     start();
 }
 
-start();
+// start();
+depEmpView();
