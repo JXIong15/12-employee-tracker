@@ -1,14 +1,12 @@
 const db = require("../db");
 const inquire = require("inquirer");
 require("console.table");
-const menus = require("../")
 
-const empView = {
+const empMenu= {
 
     async genEmpView() {
         let allEmployees = await db.selectAllEmployees();
         console.table(allEmployees);
-        start();
     },
 
 
@@ -25,12 +23,11 @@ const empView = {
         .then(async (res) => {
             let depEmployees = await db.selectManEmployees(res.manager);
             if (depEmployees.length === 0) {
-                console.log(`\n${res.manager} is not a manager for any employee(s).\n`);
+                return console.log(`\n${res.manager} is not a manager for any employee(s).\n`);
             } else {
                 console.log("\n");
-                console.table(depEmployees);
+                return console.table(depEmployees);
             }
-            start(); 
         })
     },
 
@@ -45,16 +42,15 @@ const empView = {
 
     async remEmp() {
         console.log("rem emp");
-        start();
     },
 
     async updateEmpRole() {
         console.log("update emp role");
-        start();
     },
 
     async updateEmpMan() {
         console.log("update emp manager");
-        start();
     }
 }
+
+module.exports = empMenu;

@@ -1,7 +1,6 @@
 const db = require("../db");
 const inquire = require("inquirer");
 require("console.table");
-const menus = require("../")
 
 const deptMenu = {
     async depEmpView() {
@@ -16,17 +15,15 @@ const deptMenu = {
         .then(async (res) => {
             let depEmployees = await db.selectDepEmployees(res.dept);
             if (deptList.length = 0) {
-                console.log("No departments. Add one.")
+                return console.log("No departments. Add one.")
             } else {
                 console.log("\n")
-                console.table(depEmployees); 
+                return console.table(depEmployees); 
             }
-            return console.log("t")
-             //     return menus.deptMenu();
         })
     },
 
-    addDept() {
+    async addDept() {
 
         return console.log("addDept")
     },
@@ -35,7 +32,7 @@ const deptMenu = {
 
         return console.log("remDept")
     },
-    
+
     deptBudget() {
 
         return console.log("deptBudget")
