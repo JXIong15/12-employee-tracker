@@ -14,7 +14,6 @@ const roleMenu = {
             roles.push(role); // NEED TO SAVE TO LOCALSTORAGE/DATABASE
             return console.table(roles);
         })
-        // return console.log("addRole")
     },
 
     remRole() {

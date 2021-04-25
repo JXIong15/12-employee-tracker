@@ -172,4 +172,5 @@ function employeeMenu() {
 
 
 // eMenu.addEmp()
-rMenu.addRole();
+// rMenu.addRole();
+dMenu.addDept();

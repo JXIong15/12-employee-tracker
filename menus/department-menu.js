@@ -1,6 +1,11 @@
 const db = require("../db");
 const inquire = require("inquirer");
 require("console.table");
+const Department = require("../library/Department");
+const addDept = require("../library/add-department")
+
+// WILL PRIMARY IDS AUTO?
+const depts = []; // NEED TO AUTOINPUT ALREADY SAVED ROLES
 
 const deptMenu = {
     async depEmpView() {
@@ -23,8 +28,12 @@ const deptMenu = {
     },
 
     async addDept() {
-
-        return console.log("addDept")
+        inquire.prompt(addDept).then(async (res) => {
+            const dept = new Department(res.newDept);
+            depts.push(dept); // NEED TO SAVE TO LOCALSTORAGE/DATABASE
+            return console.table(depts);
+        })
+        // return console.log("addDept")
     },
 
     remDept() {
