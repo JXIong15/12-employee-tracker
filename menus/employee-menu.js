@@ -31,9 +31,10 @@ const empMenu= {
         })
     },
 
+    // TO-DO
     async addEmp() {
         inquire.prompt(addEmployee).then(async (res) => {
-            let data = await db.data(res.title);
+            let data = await db.roleData(res.title);
 
             const employee = new Employee(res.first, res.last, res.title);
             employee.department = await db.deptName(data[0].department_id);
@@ -41,7 +42,7 @@ const empMenu= {
             employee.manager = res.manager;
             employee.depID = data[0].department_id;
 
-            team.push(employee); // NEED TO SAVE TO LOCALSTORAGE
+            team.push(employee); // NEED TO SAVE TO LOCALSTORAGE/DATABASE
             return console.table(team);
         })
     },
@@ -67,7 +68,7 @@ const empMenu= {
             inquire.prompt({
                 type: 'list',
                 name: 'newRole',
-                message: "What is their New Role?",
+                message: `What is their New Role?`,
                 choices: roleList
             })
             .then(async (resp) => {
@@ -76,11 +77,36 @@ const empMenu= {
                 return console.table(newTable);
             })
         })
-        
     },
 
     async updateEmpMan() {
-        console.log("update emp manager");
+        return console.log("update emp manager");
+
+        // DOESN'T WORK RN
+        let empList = await db.makeManagerList();
+        let roleList = await db.makeRoleList();
+        let emp;
+
+        inquire.prompt({
+            type: 'list',
+            name: 'chosenEmp',
+            message: "Which Employee's manager would you like to change?",
+            choices: empList
+        })
+        .then(async (res) => {
+            emp = res.chosenEmp;
+            inquire.prompt({
+                type: 'list',
+                name: 'newMan',
+                message: "Who is their New Manager?",
+                choices: roleList
+            })
+            .then(async (resp) => {
+                await db.updateRole(emp, resp.newMan);
+                let newTable = await empMenu.genEmpView();
+                return console.table(newTable);
+            })
+        })
     }
 }
 

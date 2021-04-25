@@ -143,8 +143,8 @@ function employeeMenu() {
             }
             case 'Add Employee': {
                 await eMenu.addEmp();
-                // employeeMenu();
-                // break;
+                employeeMenu();
+                break;
             }
             case 'Remove Employee': {
                 await eMenu.remEmp();
@@ -172,4 +172,4 @@ function employeeMenu() {
 
 
 // eMenu.addEmp()
-eMenu.updateEmpRole();
+rMenu.addRole();

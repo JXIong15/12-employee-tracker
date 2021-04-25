@@ -105,7 +105,7 @@ class DB {
         return roleList;
     }
 
-    async data(role) {
+    async roleData(role) {
         let roleID = await this.connection.query(`
         SELECT id FROM department 
             WHERE id IN (
@@ -118,6 +118,13 @@ class DB {
             WHERE department_id = ${roleID[0].id} AND title = "${role}"
             ORDER BY role.id ASC;`);
         return JSON.parse(JSON.stringify(rdp));
+    }
+
+    async getDeptID(dName) {
+        let result =  await this.connection.query(
+            `SELECT id FROM department WHERE name = "${dName}";`
+        )
+        return result[0].id;
     }
 
     async deptName(deptID) {
@@ -144,6 +151,20 @@ class DB {
                 WHERE id = role_id)
                 AND CONCAT('', e.first_name, ' ', e.last_name) = "${name}";
         `)
+    }
+
+    async updateManager(name, newMan) {
+        return("db.index.updateManager")
+        // search for the role_id of the input role
+        let result = await this.connection.query(`
+            SELECT id FROM employee e
+            WHERE CONCAT('', e.first_name, ' ', e.last_name) = "${newMan}";
+        `)
+        console.log(result[0].id);
+        let newManID = result[0].id;
+
+        return await this.connection.query(`
+            `)
     }
 }
 module.exports = new DB(connection);

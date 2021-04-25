@@ -1,8 +1,3 @@
-// const employee = require("./add-employee");
-const db = require("../db");
-const { connection } = require("../db");
-
-
 class Employee {
     constructor (first, last, title, manager ) {
         this.first = first;
@@ -10,6 +5,7 @@ class Employee {
         this.title = title;
         this.manager = manager;
     }
+
     getFirst() {
         return this.first;
     }
