@@ -1,8 +1,7 @@
 const db = require("./db")
 const inquire = require("inquirer");
-const { connection } = require("./db");
+const { connection, addNewEmp, addNewRole, addNewDept } = require("./db");
 const { response } = require("express");
-// require("console.table");
 const { printTable } = require("console-table-printer")
 
 
@@ -121,7 +120,6 @@ function employeeMenu() {
 
 async function depEmpView() {
     let deptsArr = await deptList();
-
     inquire.prompt({
         type: 'list',
         name: 'dept',
@@ -130,13 +128,13 @@ async function depEmpView() {
     })
     .then(async (res) => {
         let depEmployees = await db.selectDepEmployees(res.dept);
-        if (deptsArr.length = 0) {
-            console.log("No departments. Add one.")
+        if (depEmployees.length === 0) {
+            console.log("No Employee(s) in department. Add one.\n");
+            addEmp();
         } else {
-            console.log("\n")
             printTable(depEmployees); 
+            deptMenu();
         }
-        deptMenu();
     })
 }
 
@@ -161,26 +159,37 @@ async function addDept() {
 }
 
 async function remDept() {
-    let allDepts = await db.makeDeptList();
-
+    let deptsArr = await deptList();
     inquire.prompt([
         {
             type: 'list',
             name: 'delete',
             message: "Which Department do you want to remove?",
-            choices: allDepts
+            choices: deptsArr
         }
     ]).then((res) => {
+        console.log(res.delete)
         db.removeDept(res.delete);
         deptView();
     })
 }
-// BONUS
+
 async function deptBudget() {
-    // let deptsArr = await deptList();
-    console.log("deptBudget")
-    deptView();
+    let deptsArr = await deptList();
+    inquire.prompt([
+        {
+            type: 'list',
+            name: 'budget',
+            message: "Which Department's budget do you want to view?",
+            choices: deptsArr
+        }
+    ]).then(async (res) => {
+        let budgetTotal = await db.calcDeptBudget(res.budget);
+        printTable(budgetTotal)
+        deptMenu();
+    })
 }
+
 
 
 
@@ -218,7 +227,7 @@ async function addRole() {
         roleView();
     })
 }
-
+// FIX THIS
 async function remRole() {
     let roleArr = await roleList();
     inquire.prompt([
@@ -364,36 +373,50 @@ async function updateEmpMan() {
 
 async function deptList() {
     let depts = await db.makeDeptList();
-    const deptsArr = depts.map(({id, name}) => ({
-        name: name,
-        value: id
-    }));
-    return deptsArr;
+    if (depts.length === 0) {
+        console.log("No department(s). Add one.\n")
+        addDept();
+    } else {
+        const deptsArr = depts.map(({id, name}) => ({
+            name: name,
+            value: id
+        }));
+        return deptsArr;
+    }
 }
 
 async function roleList() {
     const roles = await db.makeRoleList();
-    const roleArr = roles.map(({id, title, salary, department_id}) => ({
-        name: title,
-        salary: salary,
-        department_id: department_id,
-        value: id
-    }));
-    return roleArr;
+    if (roles.length === 0) {
+        console.log("No Role(s). Add one.\n");
+        addRole();
+    } else {
+        const roleArr = roles.map(({id, title, salary, department_id}) => ({
+            name: title,
+            salary: salary,
+            department_id: department_id,
+            value: id
+        }));
+        return roleArr;
+    }
 }
 
 async function managerList() {
     const managers = await db.makeManagerList();
-     const manArr = managers.map(({id, first_name, last_name, role_id, manager_id}) => ({
-         name: [first_name,last_name].join(" "),
-         role_id: role_id,
-         manager_id: manager_id,
-         value: id
-     }));
-     return manArr;
+     if (managers.length === 0) {
+        console.log("No Employee(s). Add one.\n");
+        addEmp();
+    } else {
+        const manArr = managers.map(({id, first_name, last_name, role_id, manager_id}) => ({
+            name: [first_name,last_name].join(" "),
+            role_id: role_id,
+            manager_id: manager_id,
+            value: id
+        }));
+        return manArr;
+    }
 }
 
 
 // initializes app
-// start();
-
+start();

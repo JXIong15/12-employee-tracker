@@ -76,20 +76,31 @@ class DB {
         return this.connection.query(`
             SELECT *
                 FROM department
-                ORDER BY department.id ASC`);
-        
+                ORDER BY id ASC`
+        );
     }
 
     addNewDept(dept) {
         return this.connection.query(`
-            INSERT INTO role SET ?`,
-        role)
+            INSERT INTO department SET ?`,
+        dept)
     }
 
-    removeDepartment(dep) {
+    removeDept(dep) {
         return this.connection.query(`
             DELETE FROM department
             WHERE id = ${dep};
+        `)
+    }
+
+    calcDeptBudget(dept) {
+        return this.connection.query(`
+        SELECT SUM(salary) deptSalary FROM role r 
+        JOIN employee e 
+            ON r.id = e.role_id 
+        JOIN department d
+            ON r.department_id = d.id
+        WHERE d.id = ${dept};
         `)
     }
 
@@ -97,7 +108,7 @@ class DB {
         return this.connection.query(`
             SELECT *
                 FROM role
-                ORDER BY role.id ASC`);
+                ORDER BY id ASC`);
     }
 
     addNewRole(role) {
@@ -145,4 +156,5 @@ class DB {
             `)
     }
 }
+
 module.exports = new DB(connection);
