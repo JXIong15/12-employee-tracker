@@ -45,39 +45,38 @@ class DB {
             ORDER BY e.id ASC`);
     }
 
-    // selectManEmployees(manager) {
-    //     return this.connection.query(`
-    //         SELECT 
-    //             e.id, 
-    //             e.first_name, 
-    //             e.last_name, 
-    //             r.title, 
-    //             d.name AS department, 
-    //             r.salary, 
-    //             CONCAT('', m.first_name, ' ', m.last_name) AS manager
-    //         FROM employee e 
-    //         JOIN role r 
-    //             ON e.role_id = r.id
-    //         LEFT JOIN employee m
-    //             ON e.manager_id = m.id
-    //         JOIN department d
-    //             ON d.id = r.department_id AND CONCAT('', m.first_name, ' ', m.last_name) = "${manager}"
-    //         ORDER BY e.id ASC`);
-    // }
+    selectManEmployees(manager) {
+        return this.connection.query(`
+            SELECT 
+                e.id, 
+                e.first_name, 
+                e.last_name, 
+                r.title, 
+                d.name AS department, 
+                r.salary, 
+                CONCAT('', m.first_name, ' ', m.last_name) AS manager
+            FROM employee e 
+            JOIN role r 
+                ON e.role_id = r.id
+            LEFT JOIN employee m
+                ON e.manager_id = m.id
+            JOIN department d
+                ON d.id = r.department_id AND CONCAT('', m.first_name, ' ', m.last_name) = "${manager}"
+            ORDER BY e.id ASC`);
+    }
 
-    // makeManagerList() {
-    //     let managerList = [];
-    //     let rdp =  this.connection.query(`
-    //         SELECT CONCAT('', e.first_name, ' ', e.last_name) AS manager
-    //             FROM employee e
-    //             ORDER BY e.id ASC`);
-    //     let managers = JSON.parse(JSON.stringify(rdp));
-    //     managers.forEach(employee => {
-    //         managerList.push(employee.manager)
-    //     }) 
-    //     // managerList.push("No One" = NULL) // CHECK
-    //     return managerList;
-    // }
+    makeManagerList() {
+        return this.connection.query(`
+            SELECT *
+                FROM employee
+                ORDER BY id ASC`);
+
+// RIGHT HERE
+        return this.connection.query(`
+            SELECT CONCAT('', e.first_name, ' ', e.last_name) AS manager
+                FROM employee e
+                ORDER BY e.id ASC`);
+    }
     
     makeDeptList() {
         return this.connection.query(`
@@ -106,6 +105,7 @@ class DB {
             INSERT INTO role SET ?`,
         role)
     }
+
     roleData(role) {
         let roleID = this.connection.query(`
         SELECT id FROM department 
@@ -132,6 +132,14 @@ class DB {
         )
     }
 
+
+
+    addNewEmp(emp) {
+        return this.connection.query(`
+            INSERT INTO employee SET ?`,
+        emp)
+    }
+
     // updateRole(name, newRole) {
     //     // search for the role_id of the input role
     //     let result = this.connection.query(`
@@ -150,6 +158,8 @@ class DB {
     //             AND CONCAT('', e.first_name, ' ', e.last_name) = "${name}";
     //     `)
     // }
+
+
 
     updateManager(name, newMan) {
         return("db.index.updateManager")

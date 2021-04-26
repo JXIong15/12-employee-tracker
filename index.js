@@ -32,7 +32,6 @@ function start() {
 }
 
 
-
 // Sub-Menus
 
 async function deptMenu() {
@@ -105,56 +104,16 @@ function employeeMenu() {
     })
     .then(async (response) => {
         switch (response.empMenu) {
-            case 'View All Employees': {
-                genEmpView();
-                break;
-            };
-            case 'View All Employees By Manager': {
-                await eMenu.manEmpView();
-                employeeMenu();
-                break;
-            }
-            case 'Add Employee': {
-                await eMenu.addEmp();
-                employeeMenu();
-                break;
-            }
-            case 'Remove Employee': {
-                await eMenu.remEmp();
-                employeeMenu();
-                break;
-            }
-            case 'Update Employee Role': {
-                await eMenu.updateEmpRole();
-                employeeMenu();
-                break;
-            }
-            case 'Update Employee Manager': {
-                await eMenu.updateEmpMan();
-                employeeMenu();
-                break;
-            }
+            case 'View All Employees': return genEmpView();
+            case 'View All Employees By Manager': return manEmpView();
+            case 'Add Employee': return addEmp();
+            case 'Remove Employee': return remEmp();
+            case 'Update Employee Role': return updateEmpRole();
+            case 'Update Employee Manager': return updateEmpMan();
             case 'Back to Main Menu': return start();
             case "Quit": connection.end();
         }
     })
-}
-
-
-
-
-
-async function genEmpView() {
-    let allEmployees = await db.selectAllEmployees();
-    printTable(allEmployees);
-    employeeMenu();
-}
-
-
-async function deptView() {
-    let allDepts = await db.makeDeptList();
-    printTable(allDepts);
-    deptMenu();
 }
 
 
@@ -183,6 +142,12 @@ async function depEmpView() {
         }
         deptView();
     })
+}
+
+async function deptView() {
+    let allDepts = await db.makeDeptList();
+    printTable(allDepts);
+    deptMenu();
 }
 
 async function addDept() {
@@ -261,6 +226,12 @@ async function remRole() {
 
 // Employee Menu
 
+async function genEmpView() {
+    let allEmployees = await db.selectAllEmployees();
+    printTable(allEmployees);
+    employeeMenu();
+}
+
 async function manEmpView() {
     let managerList = await db.makeManagerList();
     inquire.prompt({
@@ -272,27 +243,60 @@ async function manEmpView() {
     .then(async (res) => {
         let depEmployees = await db.selectManEmployees(res.manager);
         if (depEmployees.length === 0) {
-            return console.log(`\n${res.manager} is not a manager for any employee(s).\n`);
+            console.log(`\n${res.manager} is not a manager for any employee(s).\n`);
         } else {
             console.log("\n");
-            return console.table(depEmployees);
+            console.table(depEmployees);
+            employeeMenu();
         }
     })
 }
 
-// TO-DO
 async function addEmp() {
-    inquire.prompt(addEmployee).then(async (res) => {
-        let data = await db.roleData(res.title);
+    // create arrays of role data and manager data
+    const roles = await db.makeRoleList();
+    const roleArr = roles.map(({id, title, salary, department_id}) => ({
+        name: title,
+        salary: salary,
+        department_id: department_id,
+        value: id
+    }));
 
-        const employee = new Employee(res.first, res.last, res.title);
-        employee.department = await db.deptName(data[0].department_id);
-        employee.salary = data[0].salary;;
-        employee.manager = res.manager;
-        employee.depID = data[0].department_id;
+    const managers = await db.makeManagerList();
+    const manArr = managers.map(({id, first_name, last_name, role_id, manager_id}) => ({
+        name: [first_name,last_name].join(" "),
+        role_id: role_id,
+        manager_id: manager_id,
+        value: id
+    }));
 
-        team.push(employee); // NEED TO SAVE TO LOCALSTORAGE/DATABASE
-        return console.table(team);
+    inquire.prompt([
+        {
+            type: 'input',
+            name: 'first',
+            message: "What is the employee's first name?"
+        },
+        {
+            type: 'input',
+            name: 'last',
+            message: "What is the employee's last name?"
+        },
+        {
+            type: 'list',
+            name: 'title',
+            message: "What is the employee's role?",
+            choices: roleArr
+        },
+        {
+            type: 'list',
+            name: 'manager',
+            message: "Who is the employee's manager?",
+            choices: manArr
+        }
+    ]).then((res) => {
+        const emp = {first_name:res.first, last_name:res.last, role_id:res.title, manager_id:res.manager}
+        db.addNewEmp(emp);
+        genEmpView();
     })
 }
 
