@@ -2,7 +2,7 @@ const db = require("./db")
 const inquire = require("inquirer");
 const { connection } = require("./db");
 const { response } = require("express");
-require("console.table");
+// require("console.table");
 const { printTable } = require("console-table-printer")
 
 
@@ -138,7 +138,7 @@ async function depEmpView() {
             console.log("No departments. Add one.")
         } else {
             console.log("\n")
-            console.table(depEmployees); 
+            printTable(depEmployees); 
         }
         deptView();
     })
@@ -234,7 +234,7 @@ async function genEmpView() {
     printTable(allEmployees);
     employeeMenu();
 }
-
+manEmpView()
 async function manEmpView() {
     const managers = await db.makeManagerList();
     const manArr = managers.map(({id, first_name, last_name, role_id, manager_id}) => ({
@@ -252,13 +252,14 @@ async function manEmpView() {
     })
     .then(async (res) => {
         let depEmployees = await db.selectManEmployees(res.manager);
+        console.log(res.manager.name)
         if (depEmployees.length === 0) {
             console.log(`\n${res.manager} is not a manager for any employee(s).\n`);
         } else {
             console.log("\n");
-            console.table(depEmployees);
-            employeeMenu();
+            printTable(depEmployees);
         }
+        employeeMenu();
     })
 }
 
@@ -315,7 +316,6 @@ async function remEmp() {
     console.log("rem emp");
 }
 
-updateEmpRole()
 async function updateEmpRole() {
     // create arrays of role data and manager data
     const roles = await db.makeRoleList();
@@ -378,7 +378,7 @@ async function updateEmpMan() {
         .then(async (resp) => {
             await db.updateRole(emp, resp.newMan);
             let newTable = await empMenu.genEmpView();
-            return console.table(newTable);
+            return printTable(newTable);
         })
     })
 }

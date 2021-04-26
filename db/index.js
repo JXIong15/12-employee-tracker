@@ -61,7 +61,7 @@ class DB {
             LEFT JOIN employee m
                 ON e.manager_id = m.id
             JOIN department d
-                ON d.id = r.department_id AND CONCAT('', m.first_name, ' ', m.last_name) = "${manager}"
+                ON d.id = r.department_id AND e.manager_id = "${manager}"
             ORDER BY e.id ASC`);
     }
 
