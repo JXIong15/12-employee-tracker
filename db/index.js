@@ -87,6 +87,13 @@ class DB {
         
     }
 
+    addNewDept(dept) {
+        return this.connection.query(`
+            INSERT INTO role SET ?`,
+        role)
+    }
+
+
     makeRoleList() {
         return this.connection.query(`
             SELECT *
