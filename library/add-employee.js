@@ -1,15 +1,15 @@
 const db = require('../db');
 const { connection } = require("../db");
 
-let rolesList = [];
-let managerList = [];
+// let rolesList = [];
+// let managerList = [];
 
-async function lists() {
-    managerList = await db.makeManagerList();
-    rolesList = await db.makeRoleList();
-}
+// async function lists() {
+//     managerList = await db.makeManagerList();
+//     rolesList = await db.makeRoleList();
+// }
 
-lists();
+// lists();
 
 const addEmployee = [
     {

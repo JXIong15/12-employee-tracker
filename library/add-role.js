@@ -1,13 +1,13 @@
 const db = require('../db');
 const { connection } = require("../db");
 
-let deptList = [];
+// let deptList = [];
 
-async function lists() {
-    deptList = await db.makeDeptList();
-}
+// async function lists() {
+//     deptList = await db.makeDeptList();
+// }
 
-lists();
+// lists();
 
 const addRole = [
     {
@@ -24,8 +24,8 @@ const addRole = [
         type: 'list',
         name: 'newRoleDept',
         message: "What Department does this New Role belong to?",
-        // choices: deptList
-        choices: ["Sales"]
+        choices: deptsArr
+        // choices: ["Sales"]
     }
 ]
 

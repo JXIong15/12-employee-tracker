@@ -7,10 +7,7 @@ const team = []; // SAVE TO LOCAL STORAGE?
 const { response } = require("express");
 
 const empMenu= {
-    async genEmpView() {
-        let allEmployees = await db.selectAllEmployees();
-        console.table(allEmployees);
-    },
+    
 
     async manEmpView() {
         let managerList = await db.makeManagerList();
