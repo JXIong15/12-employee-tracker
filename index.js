@@ -1,6 +1,6 @@
 const db = require("./db")
 const inquire = require("inquirer");
-const { connection, addNewEmp, addNewRole, addNewDept } = require("./db");
+const { connection} = require("./db");
 const { response } = require("express");
 const { printTable } = require("console-table-printer")
 
@@ -78,7 +78,7 @@ function roleMenu() {
         switch (response.roleMenu) {
             case 'View All Role(s)':  return roleView();
             case 'Add Role': return addRole();
-            case 'Remove Role': remRole();
+            case 'Remove Role': return remRole();
             case 'Back to Main Menu': return start();
             case "Quit": connection.end();
         }
@@ -191,12 +191,11 @@ async function deptBudget() {
 }
 
 
-
-
 // Roles Menu
 
 async function roleView() {
     let allRoles = await db.makeRoleList();
+    console.log("\n");
     printTable(allRoles);
     roleMenu();
 }
@@ -227,7 +226,7 @@ async function addRole() {
         roleView();
     })
 }
-// FIX THIS
+
 async function remRole() {
     let roleArr = await roleList();
     inquire.prompt([
@@ -237,8 +236,8 @@ async function remRole() {
             message: "Which Role do you want to remove?",
             choices: roleArr
         }
-    ]).then((res) => {
-        db.removeRole(res.delete);
+    ]).then(async (res) => {
+        await db.removeRole(res.delete);
         roleView();
     })
 }
