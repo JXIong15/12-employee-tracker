@@ -39,7 +39,7 @@ class DB {
             JOIN role r 
                 ON e.role_id = r.id
             JOIN department d
-                ON d.id = r.department_id AND d.name = "${dep}"
+                ON d.id = r.department_id AND r.department_id = "${dep}"
             LEFT JOIN employee m
                 ON e.manager_id = m.id 
             ORDER BY e.id ASC`);
@@ -99,34 +99,6 @@ class DB {
         role)
     }
 
-    roleData(role) {
-        let roleID = this.connection.query(`
-        SELECT id FROM department 
-            WHERE id IN (
-        SELECT department_id FROM role 
-            WHERE title = "${role}");
-        `);
-
-        return this.connection.query(`
-            SELECT * FROM role 
-            WHERE department_id = ${roleID[0].id} AND title = "${role}"
-            ORDER BY role.id ASC;`);
-    }
-
-    getDeptID(dName) {
-        return this.connection.query(
-            `SELECT id FROM department WHERE name = "${dName}";`
-        )
-    }
-
-    deptName(deptID) {
-        return this.connection.query(
-            `SELECT name FROM department WHERE id = ${deptID}`
-        )
-    }
-
-
-
     addNewEmp(emp) {
         return this.connection.query(`
             INSERT INTO employee SET ?`,
@@ -144,19 +116,11 @@ class DB {
         `)
     }
 
-
-
-    updateManager(name, newMan) {
-        return("db.index.updateManager")
-        // search for the role_id of the input role
-        let result =  this.connection.query(`
-            SELECT id FROM employee e
-            WHERE CONCAT('', e.first_name, ' ', e.last_name) = "${newMan}";
-        `)
-        console.log(result[0].id);
-        let newManID = result[0].id;
-
+    updateManager(emp, newMan) {
         return  this.connection.query(`
+            UPDATE employee
+            SET manager_id = ${newMan}
+            WHERE id = ${emp};
             `)
     }
 }
