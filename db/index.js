@@ -70,12 +70,6 @@ class DB {
             SELECT *
                 FROM employee
                 ORDER BY id ASC`);
-
-// RIGHT HERE
-        return this.connection.query(`
-            SELECT CONCAT('', e.first_name, ' ', e.last_name) AS manager
-                FROM employee e
-                ORDER BY e.id ASC`);
     }
     
     makeDeptList() {
@@ -91,7 +85,6 @@ class DB {
             INSERT INTO role SET ?`,
         role)
     }
-
 
     makeRoleList() {
         return this.connection.query(`
@@ -140,24 +133,16 @@ class DB {
         emp)
     }
 
-    // updateRole(name, newRole) {
-    //     // search for the role_id of the input role
-    //     let result = this.connection.query(`
-    //         SELECT id FROM role
-    //         WHERE title = "${newRole}";
-    //     `)
-    //     console.log(result[0].id);
-    //     let newRoleID = result[0].id;
-
-    //     return this.connection.query(`
-    //         UPDATE employee e
-    //         SET role_id = ${newRoleID}
-    //             WHERE role_id IN (
-    //         SELECT id FROM role 
-    //             WHERE id = role_id)
-    //             AND CONCAT('', e.first_name, ' ', e.last_name) = "${name}";
-    //     `)
-    // }
+    updateRole(emp, newRole) {
+        return this.connection.query(`
+            UPDATE employee
+            SET role_id = ${newRole}
+            WHERE id = ${emp}
+                AND role_id IN (
+                SELECT id FROM role 
+                WHERE id = role_id);
+        `)
+    }
 
 
 

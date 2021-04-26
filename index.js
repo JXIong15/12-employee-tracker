@@ -164,12 +164,14 @@ async function addDept() {
     })
 }
 
+// BONUS
 function remDept() {
 
     console.log("remDept")
     deptView();
 }
 
+// BONUS
 function deptBudget() {
 
     console.log("deptBudget")
@@ -217,6 +219,7 @@ async function addRole() {
     })
 }
 
+// BONUS
 async function remRole() {
 
     console.log("remRole")
@@ -233,12 +236,19 @@ async function genEmpView() {
 }
 
 async function manEmpView() {
-    let managerList = await db.makeManagerList();
+    const managers = await db.makeManagerList();
+    const manArr = managers.map(({id, first_name, last_name, role_id, manager_id}) => ({
+        name: [first_name,last_name].join(" "),
+        role_id: role_id,
+        manager_id: manager_id,
+        value: id
+    }));
+
     inquire.prompt({
         type: 'list',
         name: 'manager',
         message: "Which manager's team do you want to view?",
-        choices: managerList
+        choices: manArr
     })
     .then(async (res) => {
         let depEmployees = await db.selectManEmployees(res.manager);
@@ -300,38 +310,49 @@ async function addEmp() {
     })
 }
 
+// BONUS
 async function remEmp() {
     console.log("rem emp");
 }
 
-// TO-DO IF I HAVE TIME: DISPLAY CHOSEN EMP CURRENT ROLE
+updateEmpRole()
 async function updateEmpRole() {
-    let empList = await db.makeManagerList();
-    let roleList = await db.makeRoleList();
-    let emp;
+    // create arrays of role data and manager data
+    const roles = await db.makeRoleList();
+    const roleArr = roles.map(({id, title, salary, department_id}) => ({
+        name: title,
+        salary: salary,
+        department_id: department_id,
+        value: id
+    }));
 
-    inquire.prompt({
+    const managers = await db.makeManagerList();
+    const manArr = managers.map(({id, first_name, last_name, role_id, manager_id}) => ({
+        name: [first_name,last_name].join(" "),
+        role_id: role_id,
+        manager_id: manager_id,
+        value: id
+    }));
+
+    inquire.prompt([{
         type: 'list',
         name: 'chosenEmp',
         message: "Which Employee's Role would you like to change?",
-        choices: empList
-    })
+        choices: manArr
+    },
+    {
+        type: 'list',
+        name: 'newRole',
+        message: `What is their New Role?`,
+        choices: roleArr
+    }])
     .then(async (res) => {
-        emp = res.chosenEmp;
-        inquire.prompt({
-            type: 'list',
-            name: 'newRole',
-            message: `What is their New Role?`,
-            choices: roleList
-        })
-        .then(async (resp) => {
-            await db.updateRole(emp, resp.newRole);
-            let newTable = await empMenu.genEmpView();
-            return console.table(newTable);
-        })
+        await db.updateRole(res.chosenEmp, res.newRole);
+        genEmpView();
     })
 }
 
+// BONUS
 async function updateEmpMan() {
     return console.log("update emp manager");
 
@@ -364,5 +385,5 @@ async function updateEmpMan() {
 
 
 // initializes app
-start();
+// start();
 
