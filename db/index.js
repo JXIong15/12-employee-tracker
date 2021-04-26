@@ -86,6 +86,13 @@ class DB {
         role)
     }
 
+    removeDepartment(dep) {
+        return this.connection.query(`
+            DELETE FROM department
+            WHERE id = ${dep};
+        `)
+    }
+
     makeRoleList() {
         return this.connection.query(`
             SELECT *
@@ -99,10 +106,24 @@ class DB {
         role)
     }
 
+    removeRole(role) {
+        return this.connection.query(`
+            DELETE FROM role
+            WHERE id = ${role};
+        `)
+    }
+
     addNewEmp(emp) {
         return this.connection.query(`
             INSERT INTO employee SET ?`,
         emp)
+    }
+
+    removeEmp(emp) {
+        return this.connection.query(`
+            DELETE FROM employee
+            WHERE id = ${emp};
+        `)
     }
 
     updateRole(emp, newRole) {

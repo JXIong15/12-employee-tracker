@@ -159,15 +159,25 @@ async function addDept() {
         deptView();
     })
 }
-// BONUS
-function remDept() {
-    let deptsArr = await deptList();
-    console.log("remDept")
-    deptView();
+
+async function remDept() {
+    let allDepts = await db.makeDeptList();
+
+    inquire.prompt([
+        {
+            type: 'list',
+            name: 'delete',
+            message: "Which Department do you want to remove?",
+            choices: allDepts
+        }
+    ]).then((res) => {
+        db.removeDept(res.delete);
+        deptView();
+    })
 }
 // BONUS
-function deptBudget() {
-    let deptsArr = await deptList();
+async function deptBudget() {
+    // let deptsArr = await deptList();
     console.log("deptBudget")
     deptView();
 }
@@ -208,11 +218,20 @@ async function addRole() {
         roleView();
     })
 }
-// BONUS
+
 async function remRole() {
     let roleArr = await roleList();
-    console.log("remRole")
-    roleView();
+    inquire.prompt([
+        {
+            type: 'list',
+            name: 'delete',
+            message: "Which Role do you want to remove?",
+            choices: roleArr
+        }
+    ]).then((res) => {
+        db.removeRole(res.delete);
+        roleView();
+    })
 }
 
 
@@ -235,9 +254,8 @@ async function manEmpView() {
     })
     .then(async (res) => {
         let depEmployees = await db.selectManEmployees(res.manager);
-        console.log(res.manager.name)
         if (depEmployees.length === 0) {
-            console.log(`\n${res.manager} is not a manager for any employee(s).\n`);
+            console.log(`Employee is not a manager for any employee(s).\n`);
         } else {
             console.log("\n");
             printTable(depEmployees);
@@ -280,10 +298,21 @@ async function addEmp() {
         genEmpView();
     })
 }
-// BONUS
+
 async function remEmp() {
-    console.log("rem emp");
-    genEmpView();
+    let manArr = await managerList();
+
+    inquire.prompt([
+        {
+            type: 'list',
+            name: 'delete',
+            message: "Who is the Employee do you want to remove?",
+            choices: manArr
+        }
+    ]).then((res) => {
+        db.removeEmp(res.delete);
+        genEmpView();
+    })
 }
 
 async function updateEmpRole() {
