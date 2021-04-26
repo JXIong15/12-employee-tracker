@@ -5,7 +5,7 @@ const { response } = require("express");
 const { printTable } = require("console-table-printer")
 
 
-console.log("\n-----------------\nEmployee Manager\n-----------------\n");
+console.log("\n------------------\n Employee Manager\n------------------\n");
 
 // Main Menu
 function start() {
@@ -25,7 +25,10 @@ function start() {
             case 'Department Menu': return deptMenu();
             case 'Role Menu': return roleMenu();
             case 'Employee Menu': return employeeMenu();
-            case "Quit": connection.end();
+            case "Quit": {
+                console.log("\n----------\n Good Bye\n----------\n");
+                return connection.end();
+            }
         }
     })
 }
@@ -168,7 +171,6 @@ async function remDept() {
             choices: deptsArr
         }
     ]).then((res) => {
-        console.log(res.delete)
         db.removeDept(res.delete);
         deptView();
     })

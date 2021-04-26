@@ -1,150 +1,117 @@
 # Unit 12 MySQL Homework: Employee Tracker
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
-## TO DO: 
-* README
-* submit on BCS
+## Table of Contents
+* [Introduction](#introduction)
+* [Functionality](#functionality)
+* [Tasks Completed](#tasks-completed)
+* [Technologies Used](#technologies-used)
+* [Installations](#installations)
+* [Demos](#demos)
+* [Future Ideas](#future-ideas)
+* [Sources](#sources)
+* [License](#license)
 
 
--------------------
-
-Developers are often tasked with creating interfaces that make it easy for non-developers to view and interact with information stored in databases. Often these interfaces are known as **C**ontent **M**anagement **S**ystems. In this homework assignment, your challenge is to architect and build a solution for managing a company's employees using node, inquirer, and MySQL.
-
-## Instructions
-
-Design the following database schema containing three tables:
-
-![Database Schema](Assets/schema.png)
-
-<!-- * **department**:
-
-  * **id** - INT PRIMARY KEY
-  * **name** - VARCHAR(30) to hold department name
-
-* **role**:
-
-  * **id** - INT PRIMARY KEY
-  * **title** -  VARCHAR(30) to hold role title
-  * **salary** -  DECIMAL to hold role salary
-  * **department_id** -  INT to hold reference to department role belongs to
-
-* **employee**:
-
-  * **id** - INT PRIMARY KEY
-  * **first_name** - VARCHAR(30) to hold employee first name
-  * **last_name** - VARCHAR(30) to hold employee last name
-  * **role_id** - INT to hold reference to role employee has
-  * **manager_id** - INT to hold reference to another employee that manages the employee being Created. This field may be null if the employee has no manager -->
-  
-Build a command-line application that at a minimum allows the user to:
-
-  <!-- * Add  departments, roles, 
-    * employees -->
-
-  <!-- * View departments, roles, employees -->
-
-  <!-- * Update employee roles -->
+ ## Introduction
+ Uses Node, Inquier, MySql, and the command line to generate an employee database. The database displays departments, roles, and individual employee information.
+ * GitHub Repository: https://github.com/JXIong15/12-employee-tracker
+ * [App Demonstration:](#demos)
+* [Sample Display]("./assets/employees.png)
+<p align="center"><img src="./assets/employees.png" width="80%" stylealt="all employees"/></p>
 
 
-
-Bonus points if you're able to:
-
-  * Update employee managers
-
-  <!-- * View employees by manager -->
-
-  * Delete departments, roles, and employees
-
-  * View the total utilized budget of a department -- ie the combined salaries of all employees in that department
-
-We can frame this challenge as follows:
-
+## Functionality
+* When the program is initiated, the main menu is displayed. The user has a choice of viewing the Departments, Roles, or Employees Menus.
+* In the Departments Menu, the user can view employees in each department, view all departments, add departments, remove departments, and view each department's budget.
+  * When a Department is deleted, the roles and employees in that department are also deleted.
+  * The budget is the amount spent on employee salaries in that department.
+* In the Roles Menu, the user can view all roles, add roles, and delete roles.
+  * When a role is deleted, the employees for that role are also deleted.
+* In the Employees Menu, all employees can be viewed, employees can be viewed by manager, employees can be added and removed, and employee information can be updated. 
+  * The information that can be updated are the Employee's role and Manager.
+* If the user wants preput information to test the app, they can run:
 ```
-As a business owner
-I want to be able to view and manage the departments, roles, and employees in my company
-So that I can organize and plan my business
+mysql -h HOSTNAME -u USER DATABASE < ./db/schema.sql
+mysql -h HOSTNAME -u USER DATABASE < ./db/seeds.sql
 ```
 
-How do you deliver this? Here are some guidelines:
 
-* Use the [MySQL](https://www.npmjs.com/package/mysql) NPM package to connect to your MySQL database and perform queries.
-
-* Use [InquirerJs](https://www.npmjs.com/package/inquirer/v/0.2.3) NPM package to interact with the user via the command-line.
-
-* Use [console.table](https://www.npmjs.com/package/console.table) to print MySQL rows to the console. There is a built-in version of `console.table`, but the NPM package formats the data a little better for our purposes.
-
-* You may wish to have a separate file containing functions for performing specific SQL queries you'll need to use. Could a constructor function or a class be helpful for organizing these?
-
-* You will need to perform a variety of SQL JOINS to complete this assignment, and it's recommended you review the week's activities if you need a refresher on this.
-
-![Employee Tracker](Assets/employee-tracker.gif)
-
-### Hints
-
-* You may wish to include a `seed.sql` file to pre-populate your database. This will make development of individual features much easier.
-
-* Focus on getting the basic functionality completed before working on more advanced features.
-
-* Review the week's activities for a refresher on MySQL.
-
-* Check out [SQL Bolt](https://sqlbolt.com/) for some extra MySQL help.
-
-## Minimum Requirements
-
-* Functional application.
-
-* GitHub repository with a unique name and a README describing the project.
-
-* The command-line application should allow users to:
-
-  * Add departments, roles, employees
-
-  * View departments, roles, employees
-
-  * Update employee roles
-
-## Bonus
-
-* The command-line application should allow users to:
-
-  * Update employee managers
-
-  * View employees by manager
-
-  * Delete departments, roles, and employees
-
-  * View the total utilized budget of a department -- ie the combined salaries of all employees in that department
-
-## Commit Early and Often
-
-One of the most important skills to master as a web developer is version control. Building the habit of committing via Git is important for two reasons:
-
-* Your commit history is a signal to employers that you are actively working on projects and learning new skills.
-
-* Your commit history allows you to revert your codebase in the event that you need to return to a previous state.
-
-Follow these guidelines for committing:
-
-* Make single-purpose commits for related changes to ensure a clean, manageable history. If you are fixing two issues, make two commits.
-
-* Write descriptive, meaningful commit messages so that you and anyone else looking at your repository can easily understand its history.
-
-* Don't commit half-done work, for the sake of your collaborators (and your future self!).
-
-* Test your application before you commit to ensure functionality at every step in the development process.
-
-We would like you to have well over 200 commits by graduation, so commit early and often!
-
-**Important**: You will be committing a file that contains your database credentials. Make sure your MySQL password is not used for any other personal accounts, because it will be visible on GitHub. In upcoming lessons, you will learn how to better secure this password, or you can start researching npm packages now that could help you.
+## Tasks Completed
+* Dowloaded necessary NPM packages. View [Installations](#installations) below for exact packages.
+* Created a connection between the database and server using MySql.
+* Use Util to promisfy query information from the server.
+* Created 2 `.sql` files
+  * One is to create the database
+  * Second is to input information to test the app
+* Created a database class to construct a connection to the server.
+  * created functions which return the desired query information from the server
+* Used `Inquirer` to interact with what the user wants to do.
+* Used switch statements in the menus.
+* Created array functions which call on the connections file to the server. The function checks there are values in the array before mapping it accordingly to be returned as an array of desired information rahter than just a `PRIMARY KEY ID`.
+  * Used the `SELECT * FROM` method to obtain all information from the database pertaining to the desired array data.
+* To view desired information, `async-await` functions wait for the connection to send back the data from the database. This is then printed out in a table.
+  * On the server side, the various tables are joined through `SELECT`, `JOIN`, and `LEFT JOIN` properties.
+    * To view employees by Department or Manager, an extra comparison factor is used to ensure the information is the user-specified one.
+* To add new information, the user-input data is passed to the database by the `INSERT INTO [table_name] SET ?` method with the data.
+* To remove desired information, the `DELETE FROM [table_name]` is used where the `id` is equal to the ID of the user-specified object to be deleted.
+* To calculate the Department Budget, the `SUM` method is used to add the total salary from the roles of each employee in that desired department.
+* To update employee information, the `UPDATE` and `SET` methods change the information where specified.
 
 
-## Submission on BCS
+## Installations
+* Download NPM and packages:
+  * Inquirer (npm install inquirer)
+  * Node (npm install node)
+  * Dotenv (npm install dotenv)
+  * Express (npm install express)
+  * MySql (npm install mysql)
+  * Console Table Printer (npm install console-printer-table)
+    * could also use Console Table (npm install console-table)
 
-You are required to submit the following:
 
-* The URL of the GitHub repository
+## Technologies Used
+* JavaScript
+* NPM Packages
+* Terminal/Command Line (to interact with the questions)
+* MySql Workbench
+  * Query Conenection
+* MySql Server
 
-* A video demonstrating the entirety of the app's functionality 
 
-- - -
-© 2021 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.
+## Demos
+Whole App Demo: 
+
+[Menu Demo](URL):
+   <p align="center"><img src="./assets/html-menu-demo.gif" width="100% height="100%" stylealt="Menu demo"/></p>
+
+[Adding Department Demo](URL):
+   <p align="center"><img src="./assets/adding-demo.gif" stylealt="adding department demo"/></p>
+
+[Removing Role Demo](URL):
+   <p align="center"><img src="./assets/removing-demo.gif" stylealt="removing role demo"/></p>
+
+[Editing Employee Demo](URL):
+   <p align="center"><img src="./assets/html-employee-demo.gif" width="100% height="100%" stylealt="editing employee demo"/></p>
+
+
+## Future Ideas
+* Allow new employees to not have a manager
+* Separate the sub-menus into their own JS files.
+  * Couldn't do this due to "circular reasoning"
+* Edits to more Employee and Role information
+* Better header/title page
+
+
+
+## Sources
+* NPM Packages: https://www.npmjs.com/
+* MySql Workbench: https://www.mysql.com/products/workbench/
+* MySql Server: https://dev.mysql.com/downloads/mysql/
+
+
+## License
+Licensed under the [MIT License](LICENSE).
+
+<p align="center">© 2021 Jou Xiong, Trilogy, Northwestern Coding Bootcamp</p>

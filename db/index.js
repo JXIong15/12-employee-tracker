@@ -95,7 +95,7 @@ class DB {
 
     calcDeptBudget(dept) {
         return this.connection.query(`
-        SELECT SUM(salary) deptSalary FROM role r 
+        SELECT SUM(salary) dept_salary FROM role r 
         JOIN employee e 
             ON r.id = e.role_id 
         JOIN department d
