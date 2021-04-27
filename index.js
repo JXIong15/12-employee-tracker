@@ -59,7 +59,10 @@ async function deptMenu() {
             case 'Remove Department': return remDept();
             case 'View Department Budget': return deptBudget();
             case 'Back to Main Menu': return start();
-            case'Quit': connection.end();
+            case'Quit': {
+                console.log("\n----------\n Good Bye\n----------\n");
+                return connection.end();
+            }
         }
     })
 }
@@ -83,7 +86,10 @@ function roleMenu() {
             case 'Add Role': return addRole();
             case 'Remove Role': return remRole();
             case 'Back to Main Menu': return start();
-            case "Quit": connection.end();
+            case "Quit": {
+                console.log("\n----------\n Good Bye\n----------\n");
+                return connection.end();
+            }
         }
     })
 }
@@ -113,7 +119,10 @@ function employeeMenu() {
             case 'Update Employee Role': return updateEmpRole();
             case 'Update Employee Manager': return updateEmpMan();
             case 'Back to Main Menu': return start();
-            case "Quit": connection.end();
+            case "Quit": {
+                console.log("\n----------\n Good Bye\n----------\n");
+                return connection.end();
+            }
         }
     })
 }

@@ -17,8 +17,7 @@
  ## Introduction
  Uses Node, Inquier, MySql, and the command line to generate an employee database. The database displays departments, roles, and individual employee information.
  * GitHub Repository: https://github.com/JXIong15/12-employee-tracker
- * [App Demonstration:](#demos)
-* [Sample Display]("./assets/employees.png)
+ * [App Demonstration:]("https://drive.google.com/file/d/1nho_JsT15NoVYrZD1V_KKVB-p9wdJvzZ/preview")
 <p align="center"><img src="./assets/employees.png" width="80%" stylealt="all employees"/></p>
 
 
@@ -59,6 +58,9 @@ mysql -h HOSTNAME -u USER DATABASE < ./db/seeds.sql
 * To calculate the Department Budget, the `SUM` method is used to add the total salary from the roles of each employee in that desired department.
 * To update employee information, the `UPDATE` and `SET` methods change the information where specified.
 
+<p align="center"><img src="./assets/budget.png" width="80%" stylealt="total budget for engineering department"/></p>
+<p align="center">Engineering Department Budget Example</p>
+
 
 ## Installations
 * Download NPM and packages:
@@ -81,23 +83,25 @@ mysql -h HOSTNAME -u USER DATABASE < ./db/seeds.sql
 
 
 ## Demos
-Whole App Demo: 
+Whole App Demo: https://drive.google.com/file/d/1nho_JsT15NoVYrZD1V_KKVB-p9wdJvzZ/preview
 
-[Menu Demo](URL):
-   <p align="center"><img src="./assets/html-menu-demo.gif" width="100% height="100%" stylealt="Menu demo"/></p>
+* Menu Demo:
+   <p align="center"><img src="./assets/menus.gif" width="100% height="100%" stylealt="Menu demo"/></p>
 
-[Adding Department Demo](URL):
-   <p align="center"><img src="./assets/adding-demo.gif" stylealt="adding department demo"/></p>
+* Adding Role Demo:
+   <p align="center"><img src="./assets/add-role.gif" stylealt="adding role demo"/></p>
 
-[Removing Role Demo](URL):
-   <p align="center"><img src="./assets/removing-demo.gif" stylealt="removing role demo"/></p>
+* Removing Department Demo:
+   <p align="center"><img src="./assets/delete-dept.gif" stylealt="removing dept demo"/></p>
 
-[Editing Employee Demo](URL):
-   <p align="center"><img src="./assets/html-employee-demo.gif" width="100% height="100%" stylealt="editing employee demo"/></p>
+* Editing Employee Demo:
+   <p align="center"><img src="./assets/update-employee.gif" width="100% height="100%" stylealt="editing employee demo"/></p>
 
 
 ## Future Ideas
 * Allow new employees to not have a manager
+* Make sure people cannot be their own managers
+* Prevent people from being managed by those outside of their department
 * Separate the sub-menus into their own JS files.
   * Couldn't do this due to "circular reasoning"
 * Edits to more Employee and Role information
