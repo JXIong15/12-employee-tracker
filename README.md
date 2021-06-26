@@ -17,7 +17,7 @@
  ## Introduction
  Uses Node, Inquier, MySql, and the command line to generate an employee database. The database displays departments, roles, and individual employee information.
  * GitHub Repository: https://github.com/JXIong15/12-employee-tracker
- * [App Demonstration:](https://drive.google.com/file/d/1nho_JsT15NoVYrZD1V_KKVB-p9wdJvzZ/preview)
+ * [App Demonstration:](https://drive.google.com/file/d/14m8UJ_DxuaN7g3TL18GP4zfX-_l4OKtM/view)
 <p align="center"><img src="./assets/employees.png" width="80%" stylealt="all employees"/></p>
 
 
